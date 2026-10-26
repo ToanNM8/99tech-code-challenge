@@ -23,6 +23,7 @@ interface SwapFormProps {
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 }
 
+// pay field, receive field, rate, and the swap result
 export function SwapForm({
   tokens,
   fromToken,

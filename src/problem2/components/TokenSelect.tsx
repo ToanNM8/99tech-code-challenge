@@ -11,6 +11,7 @@ interface TokenSelectProps {
   onSelect: (currency: string) => void;
 }
 
+// token button and the searchable menu
 export function TokenSelect({ tokens, symbol, open, onOpen, onClose, onSelect }: TokenSelectProps) {
   const [query, setQuery] = useState("");
   const rootRef = useRef<HTMLDivElement>(null);
@@ -25,9 +26,11 @@ export function TokenSelect({ tokens, symbol, open, onOpen, onClose, onSelect }:
     setQuery("");
     searchRef.current?.focus();
 
+    // click outside the menu
     function onPointerDown(event: MouseEvent) {
       if (!rootRef.current?.contains(event.target as Node)) onCloseRef.current();
     }
+    // Escape closes the menu
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") onCloseRef.current();
     }

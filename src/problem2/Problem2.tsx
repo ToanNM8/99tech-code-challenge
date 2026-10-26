@@ -13,8 +13,9 @@ import {
   type Receipt,
   type Token,
 } from "./lib/swap";
-import "./swap.scss";
+import "./problem2.scss";
 
+// currency swap: prices, amount, and a mocked submission
 export function Problem2() {
   const [tokens, setTokens] = useState<Token[]>([]);
   const [loading, setLoading] = useState(true);
@@ -26,6 +27,7 @@ export function Problem2() {
   const [phase, setPhase] = useState<"edit" | "submitting" | "done">("edit");
   const [receipt, setReceipt] = useState<Receipt | null>(null);
 
+  // page title
   useEffect(() => {
     document.title = "Problem 2 · Swap";
   }, []);
@@ -35,6 +37,7 @@ export function Problem2() {
     const controller = new AbortController();
     setLoading(true);
 
+    // fetch prices, or use the bundled file when the request fails
     async function load() {
       try {
         const response = await fetch(PRICES_URL, { signal: controller.signal });

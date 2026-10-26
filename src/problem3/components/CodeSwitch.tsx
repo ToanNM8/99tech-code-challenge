@@ -6,6 +6,7 @@ interface CodeSwitchProps {
   onChange: (tab: "original" | "refactored") => void;
 }
 
+// toggle between the original snippet and the refactor
 export function CodeSwitch({ label, tab, originalLabel, refactoredLabel, onChange }: CodeSwitchProps) {
   const refactored = tab === "refactored";
 

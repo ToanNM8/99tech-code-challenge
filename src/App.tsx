@@ -9,14 +9,17 @@ const links = [
   { to: "/problem3", label: "Problem 3" },
 ];
 
+// problem menu and the page for the current route
 export default function App() {
   const location = useLocation();
 
   return (
     <>
+      {/* top bar */}
       <header className="topbar">
         <div className="topbar-inner">
           <p className="brand">99Tech code challenge</p>
+          {/* problem links */}
           <nav aria-label="Problems">
             {links.map((link) => (
               <NavLink key={link.to} to={link.to}>
@@ -26,6 +29,7 @@ export default function App() {
           </nav>
         </div>
       </header>
+      {/* page for the current route */}
       <div className="page" key={location.pathname}>
         <Routes location={location}>
           <Route path="/" element={<Navigate to="/problem1" replace />} />

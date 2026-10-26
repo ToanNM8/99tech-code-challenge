@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./index.scss";
 
+// mount the app once the root node exists
 const root = document.getElementById("root");
 if (!root) throw new Error("Root element was not found.");
 

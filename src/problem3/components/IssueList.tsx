@@ -1,8 +1,4 @@
-interface IssueCopy {
-  title: string;
-  problem: string;
-  fix: string;
-}
+import type { IssueCopy } from "../lib/language";
 
 interface IssueListProps {
   issues: IssueCopy[];
@@ -13,10 +9,13 @@ interface IssueListProps {
   onSelect: (number: number) => void;
 }
 
+// issues in source order, with how many lines share each one
 export function IssueList({ issues, counts, activeIssue, label, lead, onSelect }: IssueListProps) {
   return (
     <div className="issues-scroll" tabIndex={0} aria-label={label}>
+      {/* intro */}
       <p className="lead">{lead}</p>
+      {/* issue cards */}
       <ul className="issues">
         {issues.map((issue, index) => {
           const number = index + 1;

@@ -14,6 +14,7 @@ interface SwapFieldProps {
   children?: ReactNode;
 }
 
+// one side of the swap: label, amount, and its USD value
 export function SwapField({
   label,
   inputId,

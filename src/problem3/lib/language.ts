@@ -1,4 +1,22 @@
-export const LANGUAGE = {
+export interface IssueCopy {
+  title: string;
+  problem: string;
+  fix: string;
+}
+
+export interface LanguageCopy {
+  title: string;
+  codeTitle: string;
+  lead: string;
+  language: string;
+  issuesLabel: string;
+  codeLabel: string;
+  originalTab: string;
+  refactoredTab: string;
+  issues: IssueCopy[];
+}
+
+export const LANGUAGE: Record<"en" | "vi", LanguageCopy> = {
   en: {
     title: "Messy React",
     codeTitle: "Refactored component",

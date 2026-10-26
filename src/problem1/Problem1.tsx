@@ -17,11 +17,13 @@ function summation(n: number): string {
     return values.join(" + ");
 }
 
+// three sum implementations and the equation for the current n
 export function Problem1() {
     const [raw, setRaw] = useState("5");
     const [n, setN] = useState(5);
     const [error, setError] = useState("");
 
+    // page title
     useEffect(() => {
         document.title = "Problem 1 · Three ways to sum to n";
     }, []);
@@ -75,6 +77,7 @@ export function Problem1() {
     return (
         <main className="sheet">
             <section className="card">
+                {/* heading */}
                 <header className="card-heading">
                     <h1>Three ways to sum to n</h1>
                     <p>Sum the integers from 1 through n.</p>
@@ -99,6 +102,7 @@ export function Problem1() {
                             }}
                         />
                     </div>
+                    {/* validation */}
                     {error ? (
                         <p
                             id="sum-error"

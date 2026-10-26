@@ -14,6 +14,7 @@ interface Focus {
   tick: number;
 }
 
+// replay the highlight animation on a card or a code line
 function flash(element: Element | null) {
   if (!(element instanceof HTMLElement)) return;
   element.classList.remove("is-pulse");
@@ -21,6 +22,7 @@ function flash(element: Element | null) {
   element.classList.add("is-pulse");
 }
 
+// issue list beside the original and refactored source
 export function Problem3() {
   const [lang, setLang] = useState<"en" | "vi">("en");
   const [tab, setTab] = useState<"original" | "refactored">("original");
@@ -28,6 +30,7 @@ export function Problem3() {
   const codeRef = useRef<HTMLDivElement>(null);
   const text = LANGUAGE[lang];
 
+  // keep the document language in sync with the switch
   useEffect(() => {
     document.title = "Problem 3 · Messy React";
     document.documentElement.lang = lang === "vi" ? "vi" : "en";
@@ -36,6 +39,7 @@ export function Problem3() {
     };
   }, [lang]);
 
+  // scroll the selected line into view and flash it
   useEffect(() => {
     if (focus == null) return;
     flash(document.getElementById(`issue-${focus.issue}`));
@@ -46,8 +50,9 @@ export function Problem3() {
     flash(line);
   }, [tab, focus]);
 
+  // open an issue, or move to the next line that has the same issue
   function openIssue(number: number, lineIndex?: number) {
-    const matches = lineIndexesForIssue(originalSource, number) as number[];
+    const matches = lineIndexesForIssue(originalSource, number);
     if (!matches.length) return;
     setTab("original");
     setFocus((current) => {
@@ -66,6 +71,7 @@ export function Problem3() {
   return (
     <main className="review">
       <div className="review-columns">
+        {/* title and language switch */}
         <div className="pane-heading">
           <h1>{text.title}</h1>
           <button
@@ -80,6 +86,7 @@ export function Problem3() {
             <span>VN</span>
           </button>
         </div>
+        {/* original / refactored switch */}
         <CodeSwitch
           label={text.codeLabel}
           tab={tab}
@@ -87,14 +94,16 @@ export function Problem3() {
           refactoredLabel={text.refactoredTab}
           onChange={setTab}
         />
+        {/* issue list */}
         <IssueList
           issues={text.issues}
-          counts={text.issues.map((_, index) => (lineIndexesForIssue(originalSource, index + 1) as number[]).length)}
+          counts={text.issues.map((_, index) => lineIndexesForIssue(originalSource, index + 1).length)}
           activeIssue={focus?.issue ?? null}
           label={text.issuesLabel}
           lead={text.lead}
           onSelect={openIssue}
         />
+        {/* code panel */}
         <div
           ref={codeRef}
           className="code-scroll"
