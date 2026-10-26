@@ -1,0 +1,34 @@
+.sum-results {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+
+  &-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+
+  .field-label {
+    margin-bottom: 8px;
+  }
+
+  li {
+    display: grid;
+    gap: 4px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: var(--card);
+  }
+
+  code {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  span {
+    word-break: break-word;
+  }
+}
