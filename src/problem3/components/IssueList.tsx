@@ -6,13 +6,14 @@ interface IssueCopy {
 
 interface IssueListProps {
   issues: IssueCopy[];
+  counts: number[];
   activeIssue: number | null;
   label: string;
   lead: string;
   onSelect: (number: number) => void;
 }
 
-export function IssueList({ issues, activeIssue, label, lead, onSelect }: IssueListProps) {
+export function IssueList({ issues, counts, activeIssue, label, lead, onSelect }: IssueListProps) {
   return (
     <div className="issues-scroll" tabIndex={0} aria-label={label}>
       <p className="lead">{lead}</p>
@@ -27,7 +28,9 @@ export function IssueList({ issues, activeIssue, label, lead, onSelect }: IssueL
               data-issue={number}
               onClick={() => onSelect(number)}
             >
-              <h2>{issue.title}</h2>
+              <h2>
+                {issue.title} <span className="issue-count">({counts[index]})</span>
+              </h2>
               <p>{issue.problem}</p>
               <p>{issue.fix}</p>
             </li>

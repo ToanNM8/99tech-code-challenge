@@ -1,4 +1,4 @@
-import { highlightLine, issuesForLine, sourceLines } from "../highlight";
+import { highlightLine, issuesForLine, sourceLines } from "../lib/highlight";
 
 function CodeText({ line }: { line: string }) {
   return highlightLine(line).map((part: { text: string; kind?: string }, index: number) =>

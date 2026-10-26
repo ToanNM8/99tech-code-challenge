@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
-import { formatUsd, type Token } from "../swap";
+import { formatUsd, type Token } from "../lib/swap";
 import { TokenIcon } from "./TokenIcon";
 
 interface TokenSelectProps {

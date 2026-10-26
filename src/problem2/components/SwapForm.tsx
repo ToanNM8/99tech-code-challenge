@@ -1,5 +1,5 @@
 import type { FormEvent } from "react";
-import { formatTokenAmount, type Receipt, type Token } from "../swap";
+import { formatTokenAmount, type Receipt, type Token } from "../lib/swap";
 import { SwapField } from "./SwapField";
 import { TokenSelect } from "./TokenSelect";
 

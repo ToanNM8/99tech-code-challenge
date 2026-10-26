@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
-import fallbackPrices from "./prices.json";
+import fallbackPrices from "./lib/prices.json";
 import { SwapForm } from "./components/SwapForm";
 import {
   PRICES_URL,
@@ -12,7 +12,7 @@ import {
   type PriceRow,
   type Receipt,
   type Token,
-} from "./swap";
+} from "./lib/swap";
 import "./swap.scss";
 
 export function Problem2() {

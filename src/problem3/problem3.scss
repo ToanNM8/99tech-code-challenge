@@ -201,6 +201,12 @@ body:has(main.review) {
     }
   }
 
+  .issue-count {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 650;
+  }
+
   p {
     margin: 0;
     color: var(--muted);

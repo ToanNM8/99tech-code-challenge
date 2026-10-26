@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { formatUsd } from "../swap";
+import { formatUsd } from "../lib/swap";
 
 interface SwapFieldProps {
   label: string;

@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import source from "./refactored.txt?raw";
-import originalSource from "./original.txt?raw";
-import { LANGUAGE } from "./language";
+import source from "./lib/refactored.txt?raw";
+import originalSource from "./lib/original.txt?raw";
+import { LANGUAGE } from "./lib/language";
 import { CodeSwitch } from "./components/CodeSwitch";
 import { CodeView } from "./components/CodeView";
 import { IssueList } from "./components/IssueList";
-import { lineIndexesForIssue } from "./highlight";
+import { lineIndexesForIssue } from "./lib/highlight";
 import "./problem3.scss";
 
 interface Focus {
@@ -89,6 +89,7 @@ export function Problem3() {
         />
         <IssueList
           issues={text.issues}
+          counts={text.issues.map((_, index) => (lineIndexesForIssue(originalSource, index + 1) as number[]).length)}
           activeIssue={focus?.issue ?? null}
           label={text.issuesLabel}
           lead={text.lead}
