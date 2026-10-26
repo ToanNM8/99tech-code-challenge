@@ -1,0 +1,82 @@
+@use "./styles/common";
+
+:root {
+  color-scheme: light;
+  --ink: #1c1917;
+  --muted: #57534e;
+  --line: #e7e5e4;
+  --bg: #fafaf9;
+  --card: #ffffff;
+  --ok: #166534;
+  --ok-bg: #f0fdf4;
+  --bad: #991b1b;
+  --bad-bg: #fef2f2;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.5 "Segoe UI", sans-serif;
+}
+
+.topbar {
+  border-bottom: 1px solid var(--line);
+  background: var(--card);
+
+  &-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 14px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.brand {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  a {
+    padding: 6px 12px;
+    border-radius: 8px;
+    color: inherit;
+    text-decoration: none;
+
+    &.active {
+      background: #1c1917;
+      color: #fafaf9;
+    }
+  }
+}
+
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 20px 64px;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  letter-spacing: -0.03em;
+}
+
+.lead {
+  margin: 0 0 24px;
+  color: var(--muted);
+}
