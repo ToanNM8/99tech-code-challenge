@@ -1,24 +1,34 @@
 import { useEffect, useId, useRef, useState } from "react";
-import { formatUsd } from "../swap";
+import { formatUsd, type Token } from "../swap";
 import { TokenIcon } from "./TokenIcon";
 
-export function TokenSelect({ tokens, symbol, open, onOpen, onClose, onSelect }) {
+interface TokenSelectProps {
+  tokens: Token[];
+  symbol: string;
+  open: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+  onSelect: (currency: string) => void;
+}
+
+export function TokenSelect({ tokens, symbol, open, onOpen, onClose, onSelect }: TokenSelectProps) {
   const [query, setQuery] = useState("");
-  const rootRef = useRef(null);
-  const searchRef = useRef(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
   const onCloseRef = useRef(onClose);
   const listId = useId();
   onCloseRef.current = onClose;
 
+  // close when the pointer leaves the menu or Escape is pressed
   useEffect(() => {
     if (!open) return undefined;
     setQuery("");
     searchRef.current?.focus();
 
-    function onPointerDown(event) {
-      if (!rootRef.current?.contains(event.target)) onCloseRef.current();
+    function onPointerDown(event: MouseEvent) {
+      if (!rootRef.current?.contains(event.target as Node)) onCloseRef.current();
     }
-    function onKeyDown(event) {
+    function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") onCloseRef.current();
     }
 
@@ -30,12 +40,11 @@ export function TokenSelect({ tokens, symbol, open, onOpen, onClose, onSelect })
     };
   }, [open]);
 
-  const filtered = tokens.filter((token) =>
-    token.currency.toLowerCase().includes(query.trim().toLowerCase()),
-  );
+  const filtered = tokens.filter((token) => token.currency.toLowerCase().includes(query.trim().toLowerCase()));
 
   return (
     <div className="token-select" ref={rootRef}>
+      {/* selected token */}
       <button
         type="button"
         className="token-button"
@@ -47,15 +56,10 @@ export function TokenSelect({ tokens, symbol, open, onOpen, onClose, onSelect })
         <TokenIcon key={symbol} symbol={symbol} />
         <span>{symbol}</span>
         <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true">
-          <path
-            d="M2.2 4.2 6 8l3.8-3.8"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-          />
+          <path d="M2.2 4.2 6 8l3.8-3.8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
         </svg>
       </button>
+      {/* token menu */}
       {open ? (
         <div className="token-menu">
           <input

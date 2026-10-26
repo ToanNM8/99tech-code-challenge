@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import "./problem1.scss";
 
-function summation(n) {
+// series text for the output, shortened after 12 terms
+function summation(n: number): string {
     if (n === 0) return "0";
 
     const start = n > 0 ? 1 : n;
     const end = n > 0 ? n : -1;
-    const values = [];
+    const values: number[] = [];
     for (let i = start; i <= end; i++) values.push(i);
 
     if (values.length > 12) {
@@ -22,10 +23,11 @@ export function Problem1() {
     const [error, setError] = useState("");
 
     useEffect(() => {
-        document.title = "Problem 1 · sum_to_n";
+        document.title = "Problem 1 · Three ways to sum to n";
     }, []);
 
-    function onSubmit(event) {
+    // handle form submission
+    function onSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const value = Number(raw);
         if (raw.trim() === "" || !Number.isInteger(value)) {
@@ -37,14 +39,14 @@ export function Problem1() {
     }
 
     // mathematical formula
-    var sum_to_n_a = function (n) {
+    var sum_to_n_a = function (n: number): number {
         const abs = Math.abs(n);
         const sum = abs * ((abs + 1) / 2);
         return n < 0 ? -sum : sum;
     };
 
     // loop through the numbers from 1 to |n| and add them up
-    var sum_to_n_b = function (n) {
+    var sum_to_n_b = function (n: number): number {
         const abs = Math.abs(n);
         let sum = 0;
 
@@ -56,7 +58,7 @@ export function Problem1() {
     };
 
     // recursion
-    var sum_to_n_c = function (n) {
+    var sum_to_n_c = function (n: number): number {
         if (n === 0) {
             return 0;
         }
@@ -74,9 +76,10 @@ export function Problem1() {
         <main className="sheet">
             <section className="card">
                 <header className="card-heading">
-                    <h1>Sum to n</h1>
+                    <h1>Three ways to sum to n</h1>
                     <p>Sum the integers from 1 through n.</p>
                 </header>
+                {/* input */}
                 <form onSubmit={onSubmit}>
                     <div className={`field ${error ? "invalid" : ""}`}>
                         <div className="field-label">
@@ -105,33 +108,38 @@ export function Problem1() {
                             {error}
                         </p>
                     ) : null}
-                    <button
-                        type="submit"
-                        className="btn-primary"
-                    >
-                        Calculate
-                    </button>
+
+                    {/* button */}
+                    <div className="field-actions">
+                        <button
+                            type="submit"
+                            className="btn-primary"
+                        >
+                            Calculate
+                        </button>
+                    </div>
                 </form>
 
+                {/* output: sum_to_n_a/b/c(n) === series === value */}
                 <div className="field sum-results">
                     <div className="field-label">Output:</div>
                     <ul className="sum-results-list">
                         <li>
-                            <code>sum_to_n_a({n})</code>
+                            <span>Mathematical formula</span>
                             <span>
-                                {series} === {sum_to_n_a(n)}
+                                {series} = {sum_to_n_a(n)}
                             </span>
                         </li>
                         <li>
-                            <code>sum_to_n_b({n})</code>
+                            <span>Loop through the numbers from 1 to |n| and add them up</span>
                             <span>
-                                {series} === {sum_to_n_b(n)}
+                                {series} = {sum_to_n_b(n)}
                             </span>
                         </li>
                         <li>
-                            <code>sum_to_n_c({n})</code>
+                            <span>Recursion</span>
                             <span>
-                                {series} === {sum_to_n_c(n)}
+                                {series} = {sum_to_n_c(n)}
                             </span>
                         </li>
                     </ul>

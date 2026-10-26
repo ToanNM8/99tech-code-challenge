@@ -2,8 +2,27 @@ export const PRICES_URL = "https://interview.switcheo.com/prices.json";
 
 const STABLES = new Set(["USD", "USDC", "BUSD", "USC", "axlUSDC", "YieldUSD"]);
 
-export function latestPrices(rows) {
-  const byCurrency = new Map();
+export interface PriceRow {
+  currency?: string;
+  price?: number;
+  date?: string;
+}
+
+export interface Token {
+  currency: string;
+  price: number;
+  date: string;
+}
+
+export interface Receipt {
+  pay: string;
+  receive: string;
+  from: string;
+  to: string;
+}
+
+export function latestPrices(rows: PriceRow[]): Token[] {
+  const byCurrency = new Map<string, Token>();
 
   for (const row of rows) {
     if (!row || typeof row.currency !== "string") continue;
@@ -20,18 +39,18 @@ export function latestPrices(rows) {
   }
 
   return [...byCurrency.values()].sort((a, b) =>
-    a.currency.localeCompare(b.currency, "en", { sensitivity: "base" })
+    a.currency.localeCompare(b.currency, "en", { sensitivity: "base" }),
   );
 }
 
-export function demoBalance(symbol) {
+export function demoBalance(symbol: string): number {
   if (symbol === "ETH" || symbol === "wstETH") return 1.25;
   if (symbol === "WBTC") return 0.08;
   if (STABLES.has(symbol)) return 2500;
   return 1000;
 }
 
-export function sanitizeAmount(value) {
+export function sanitizeAmount(value: string): string {
   const cleaned = String(value).replace(/,/g, "").replace(/[^\d.]/g, "");
   if (cleaned === "") return "";
 
@@ -43,23 +62,23 @@ export function sanitizeAmount(value) {
   return `${whole}.${fraction}`;
 }
 
-export function convert(amount, fromPrice, toPrice) {
+export function convert(amount: string, fromPrice: number, toPrice: number): number | null {
   const value = Number(amount);
   if (!Number.isFinite(value) || value <= 0) return null;
   if (!fromPrice || !toPrice) return null;
   return (value * fromPrice) / toPrice;
 }
 
-export function formatInputAmount(value) {
+export function formatInputAmount(value: number): string {
   if (!Number.isFinite(value)) return "";
   return value.toFixed(8).replace(/\.?0+$/, "");
 }
 
-function useCompact(value) {
+function useCompact(value: number): boolean {
   return Math.abs(value) >= 1e12;
 }
 
-export function formatTokenAmount(value) {
+export function formatTokenAmount(value: number): string {
   if (!Number.isFinite(value)) return "";
   const abs = Math.abs(value);
   if (useCompact(value)) {
@@ -69,7 +88,7 @@ export function formatTokenAmount(value) {
   return value.toLocaleString("en-US", { maximumFractionDigits });
 }
 
-export function formatUsd(value) {
+export function formatUsd(value: number): string {
   if (!Number.isFinite(value)) return "";
   if (useCompact(value)) {
     return value.toLocaleString("en-US", {
@@ -87,7 +106,7 @@ export function formatUsd(value) {
   });
 }
 
-export function amountError(amount, balance, symbol) {
+export function amountError(amount: string, balance: number, symbol: string): string {
   if (amount.trim() === "" || amount === ".") return "Enter an amount.";
   const value = Number(amount);
   if (!Number.isFinite(value) || value <= 0) return "Enter an amount greater than 0.";

@@ -1,0 +1,85 @@
+import { useMemo, type HTMLAttributes, type ReactElement } from "react";
+
+interface WalletBalance {
+  currency: string;
+  amount: number;
+  blockchain: string;
+}
+
+interface FormattedWalletBalance extends WalletBalance {
+  formatted: string;
+  usdValue: number;
+  priority: number;
+}
+
+type WalletPageProps = HTMLAttributes<HTMLDivElement>;
+
+interface WalletRowProps {
+  className?: string;
+  amount: number;
+  usdValue: number;
+  formattedAmount: string;
+}
+
+declare function useWalletBalances(): WalletBalance[] | undefined;
+declare function usePrices(): Readonly<Record<string, number>> | undefined;
+declare function WalletRow(props: WalletRowProps): ReactElement;
+
+const BLOCKCHAIN_PRIORITY: Readonly<Record<string, number>> = {
+  Osmosis: 100,
+  Ethereum: 50,
+  Arbitrum: 30,
+  Zilliqa: 20,
+  Neo: 20,
+};
+
+// chain priority; an unknown chain gets -99
+function getPriority(blockchain: string): number {
+  return BLOCKCHAIN_PRIORITY[blockchain] ?? -99;
+}
+
+// positive balances on known chains, highest priority first
+export function WalletPage({ children, ...rest }: WalletPageProps) {
+  const balances = useWalletBalances() ?? [];
+  const prices = usePrices() ?? {};
+
+  // prices are not used here, so a price update does not sort again
+  const orderedBalances = useMemo(() => {
+    return balances
+      .map((balance) => ({
+        ...balance,
+        priority: getPriority(balance.blockchain),
+      }))
+      .filter((balance) => balance.priority > -99 && balance.amount > 0)
+      .sort((left, right) => right.priority - left.priority);
+  }, [balances]);
+
+  // formatted amount and USD value for each visible balance
+  const rows = useMemo(() => {
+    return orderedBalances.map((balance): FormattedWalletBalance => {
+      const price = prices[balance.currency] ?? 0;
+      return {
+        ...balance,
+        formatted: balance.amount.toFixed(2),
+        usdValue: price * balance.amount,
+      };
+    });
+  }, [orderedBalances, prices]);
+
+  return (
+    <div {...rest}>
+      {/* one row per visible balance */}
+      {rows.map((balance) => (
+        <WalletRow
+          className="wallet-row"
+          key={`${balance.blockchain}-${balance.currency}`}
+          amount={balance.amount}
+          usdValue={balance.usdValue}
+          formattedAmount={balance.formatted}
+        />
+      ))}
+      {/* content passed in by the parent */}
+      {children}
+    </div>
+  );
+}

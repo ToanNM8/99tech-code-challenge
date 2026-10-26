@@ -1,6 +1,27 @@
-import { formatTokenAmount } from "../swap";
+import type { FormEvent } from "react";
+import { formatTokenAmount, type Receipt, type Token } from "../swap";
 import { SwapField } from "./SwapField";
 import { TokenSelect } from "./TokenSelect";
+
+interface SwapFormProps {
+  tokens: Token[];
+  fromToken: Token;
+  toToken: Token;
+  amount: string;
+  balance: number;
+  outputValue: number | null;
+  payUsd: number | null;
+  receiveUsd: number | null;
+  error: string;
+  phase: "edit" | "submitting" | "done";
+  receipt: Receipt | null;
+  openSide: "from" | "to" | null;
+  onOpenSide: (side: "from" | "to" | null) => void;
+  onAmount: (value: string) => void;
+  onChoose: (side: "from" | "to", currency: string) => void;
+  onFlip: () => void;
+  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
+}
 
 export function SwapForm({
   tokens,
@@ -20,9 +41,10 @@ export function SwapForm({
   onChoose,
   onFlip,
   onSubmit,
-}) {
+}: SwapFormProps) {
   return (
     <form onSubmit={onSubmit}>
+      {/* you pay */}
       <SwapField
         label="You pay"
         inputId="swap-pay"
@@ -50,6 +72,7 @@ export function SwapForm({
         />
       </SwapField>
 
+      {/* flip the pair */}
       <div className="swap-flip-wrap">
         <button type="button" className="swap-flip" aria-label="Switch pay and receive tokens" onClick={onFlip}>
           <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true">
@@ -61,6 +84,7 @@ export function SwapForm({
         </button>
       </div>
 
+      {/* you receive */}
       <SwapField
         label="You receive"
         amount={outputValue == null ? "0" : formatTokenAmount(outputValue)}
@@ -77,21 +101,25 @@ export function SwapForm({
         />
       </SwapField>
 
+      {/* validation */}
       {error ? (
         <p id="swap-error" className="form-error" role="alert">
           {error}
         </p>
       ) : null}
 
+      {/* rate */}
       <p className="swap-rate">
         1 {fromToken.currency} = {formatTokenAmount(fromToken.price / toToken.price)} {toToken.currency}
       </p>
 
+      {/* submit */}
       <button type="submit" className="btn-primary" disabled={phase === "submitting"}>
         {phase === "submitting" ? <span className="swap-spinner" aria-hidden="true" /> : null}
         {phase === "submitting" ? "Swapping…" : "Swap"}
       </button>
 
+      {/* receipt */}
       {phase === "done" && receipt ? (
         <p className="swap-success" role="status">
           Swapped {receipt.pay} {receipt.from} for {receipt.receive} {receipt.to}.

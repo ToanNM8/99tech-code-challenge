@@ -1,4 +1,18 @@
+import type { ReactNode } from "react";
 import { formatUsd } from "../swap";
+
+interface SwapFieldProps {
+  label: string;
+  inputId?: string;
+  amount: string;
+  empty?: boolean;
+  usd: number | null;
+  invalid?: boolean;
+  errorId?: string;
+  onAmountChange?: (value: string) => void;
+  aside?: ReactNode;
+  children?: ReactNode;
+}
 
 export function SwapField({
   label,
@@ -11,13 +25,15 @@ export function SwapField({
   onAmountChange,
   aside,
   children,
-}) {
+}: SwapFieldProps) {
   return (
     <div className={`field ${invalid ? "invalid" : ""}`}>
+      {/* label */}
       <div className="field-label">
         {inputId ? <label htmlFor={inputId}>{label}</label> : <span>{label}</span>}
         {aside}
       </div>
+      {/* amount, editable only on the pay side */}
       <div className="swap-amount">
         {onAmountChange ? (
           <input
@@ -36,6 +52,7 @@ export function SwapField({
         )}
         {children}
       </div>
+      {/* usd value */}
       <p className="swap-usd">{usd == null ? "\u00a0" : `≈ ${formatUsd(usd)}`}</p>
     </div>
   );

@@ -1,4 +1,4 @@
-import { NavLink, Navigate, Route, Routes } from "react-router-dom";
+import { NavLink, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { Problem1 } from "./problem1/Problem1";
 import { Problem2 } from "./problem2/Problem2";
 import { Problem3 } from "./problem3/Problem3";
@@ -10,6 +10,8 @@ const links = [
 ];
 
 export default function App() {
+  const location = useLocation();
+
   return (
     <>
       <header className="topbar">
@@ -24,12 +26,14 @@ export default function App() {
           </nav>
         </div>
       </header>
-      <Routes>
-        <Route path="/" element={<Navigate to="/problem1" replace />} />
-        <Route path="/problem1" element={<Problem1 />} />
-        <Route path="/problem2" element={<Problem2 />} />
-        <Route path="/problem3" element={<Problem3 />} />
-      </Routes>
+      <div className="page" key={location.pathname}>
+        <Routes location={location}>
+          <Route path="/" element={<Navigate to="/problem1" replace />} />
+          <Route path="/problem1" element={<Problem1 />} />
+          <Route path="/problem2" element={<Problem2 />} />
+          <Route path="/problem3" element={<Problem3 />} />
+        </Routes>
+      </div>
     </>
   );
 }
